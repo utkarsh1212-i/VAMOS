@@ -15,7 +15,7 @@ export default function Home() {
         <header className={styles.header}>
           <div className={styles.logo}>
             <a href="/">
-              <img src="/vamos-logo.svg" alt="VAMOS Logo" />
+              <img src="/vamos-high-resolution-logo-transparent.svg" alt="VAMOS Logo" />
             </a>
           </div>
           <div className={styles.loginButton}>
@@ -65,7 +65,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           Powered by{' '}
-          <img src="/vamos-logo.svg" alt="VAMOS" className={styles.logo} />
+          <img src="vamos-high-resolution-logo.png" alt="VAMOS" className={styles.logo} />
         </a>
       </footer>
 
