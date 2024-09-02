@@ -10,7 +10,6 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-
       <main>
         <header className={styles.header}>
           <div className={styles.logo}>
@@ -19,14 +18,14 @@ export default function Home() {
             </a>
           </div>
           <div className={styles.loginButton}>
-            <Button variant="outlined" href="#outlined-buttons">
-            Login
+            <Button variant="contained"  href="#outlined-buttons">
+              Login
             </Button>
-            {/* <a href="/login">Login</a> */}
           </div>
         </header>
+
         <h1 className={styles.title}>
-          Welcome to <a href="https://vamos.com">VAMOS Sports Hub</a>
+          Welcome to <a href="https://vamos.com">VAMOS Sports</a>
         </h1>
 
         <p className={styles.description}>
@@ -76,8 +75,7 @@ export default function Home() {
           margin: -3rem 0 4rem 0;
           display: flex;
           justify-content: space-between;
-          align-items: center; /* Dark background for the navbar */
-          // box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
+          align-items: center;
         }
         .logo img {
           height: 40px; /* Adjust logo size */
@@ -112,15 +110,27 @@ export default function Home() {
           flex: 1;
           color: white;
           display: flex;
-          width:100vw;
+          width: 100vw;
           flex-direction: column;
           justify-content: center;
           align-items: center;
           border: 2px solid black;
-          background: #0f0c29;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #24243e, #302b63, #0f0c29); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+          position: relative; /* Make the container relative */
+        }
+        main::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-image: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)), 
+            url('/riley-mccullough-iezcEpGuYdE-unsplash.jpg');
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          filter: blur(6px); /* Apply the blur effect */
+          z-index: -1; /* Place the background behind other content */
         }
         footer {
           width: 100%;
