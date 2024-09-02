@@ -73,6 +73,7 @@ export default function Home() {
         header {
           width: 100%;
           padding: 0px 4rem;
+          margin: -3rem 0 4rem 0;
           display: flex;
           justify-content: space-between;
           align-items: center; /* Dark background for the navbar */
