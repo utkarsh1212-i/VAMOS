@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Button from '@mui/material/Button';
-
+import Link from 'next/link';
 export default function Home() {
   return (
     <div className={styles.container}>
@@ -18,7 +18,7 @@ export default function Home() {
             </a>
           </div>
           <div className={styles.loginButton}>
-            <Button variant="contained"  href="#outlined-buttons">
+            <Button variant="contained" onClick={()=>{window.location.href= '/login'}}>
               Login
             </Button>
           </div>
