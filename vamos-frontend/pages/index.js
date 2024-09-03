@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>VAMOS Sports Hub</title>
+        <title>VAMOS Sports Hub </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
