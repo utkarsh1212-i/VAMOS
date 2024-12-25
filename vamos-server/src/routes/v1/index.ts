@@ -1,5 +1,6 @@
 import express from 'express';
 import authRoute from './auth.route';
+import dashboardRoute from './dashboard.route';
 
 const router = express.Router();
 
@@ -11,11 +12,11 @@ const defaultRoutes = [
   {
     path: '/dashboard',
     route: dashboardRoute,
-  },
-  {
-    path: '/teams',
-    route: teamRoute,
-  },
+  }
+  // {
+  //   path: '/teams',
+  //   route: teamRoute,
+  // },
 ];
 // const devRoutes = [
 //   // routes available only in development mode

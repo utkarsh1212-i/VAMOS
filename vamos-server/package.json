@@ -24,6 +24,7 @@
     "express-session": "1.18.1",
     "helmet": "8.0.0",
     "http-status": "2.0.0",
+    "jsonwebtoken": "9.0.2",
     "passport": "0.7.0",
     "passport-google-oauth": "2.0.0",
     "passport-google-oauth20": "2.0.0",
@@ -35,8 +36,10 @@
   },
   "devDependencies": {
     "@types/express-session": "^1.18.1",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.10.2",
     "@types/passport": "^1.0.17",
+    "@types/passport-google-oauth20": "^2.0.16",
     "@types/sequelize": "^4.28.20",
     "nodemon": "^3.1.7"
   }

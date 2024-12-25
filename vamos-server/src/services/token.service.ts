@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
 import moment from 'moment';
+import { Token } from '../models/token.model';
 
 
-const generateToken = (userId: string, expires: moment.Moment, type: string, secret = config.jwt.secret): string => {
+const generateToken = (userId: string, expires: moment.Moment, type: string, secret = "somesecrettobesetinEnvFile"): string => {
     const payload = {
       sub: userId,
       iat: moment().unix(),
@@ -19,10 +20,12 @@ const saveToken = async (token: string, userId: string, expires: moment.Moment, 
     const userIdNumber = parseInt(userId);
   
     const tokenDoc = await Token.create({
-      value: token,
-      ahfUserId: userIdNumber,
-      expiresAt: expires.toDate(),
+      tokenValue: token,
+      userId: 34,
+      expiresIn: expires.toDate() ,
       tokenType: type,
+      tokenId: 0,
+      createdAt: new Date()
     });
     return tokenDoc;
   };
