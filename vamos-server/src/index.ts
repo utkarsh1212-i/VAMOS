@@ -3,27 +3,16 @@ import app from './app';
 import { Server } from 'http';
 
 import { Server as SocketIOServer } from 'socket.io';
-
-
-import {
-} from './models';
 import { initializeQuizSocket } from './sockets/quizSocket';
 import { initializeSocket} from './sockets/index';
+import sequelize, { connectDB } from './config/db.config';
 
 // import '../src/seeder/seeder';
 
-let server: Server;
-const sequelize = new Sequelize(process.env.POSTGRES_URL, {
-  logging: false,
-});
+let server : Server
 
-
-
-sequelize
-  .authenticate()
+connectDB()
   .then(async () => {
-
-    await syncUserModel();  //syncing the models
 
     server = app.listen(process.env.SERVER_PORT, () => {
       // logger.info(`Listening to port ${config.port}`);

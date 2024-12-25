@@ -4,7 +4,7 @@ declare global {
   }
 }
 
-class AppError extends Error {
+class ApiError extends Error {
   public statusCode: number;
   public status: string;
   public isOperational: boolean;
@@ -20,4 +20,4 @@ class AppError extends Error {
   }
 }
 
-export default AppError;
+export default ApiError;

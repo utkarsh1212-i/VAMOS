@@ -5,7 +5,7 @@ import passport from 'passport';
 import session from 'express-session';
 import helmet from 'helmet';
 import * as dotenv from 'dotenv';
-import {errorHandler}  from './middlewares/errorHandler'; // Import custom error handler
+// import {errorHandler}  from './middlewares/errorHandler'; // Import custom error handler
 import routes from './routes/v1'; // Import all routes
 
 // Load environment variables
@@ -37,11 +37,11 @@ app.use(passport.session());
 app.use('/api/v1', routes); // Prefix API routes with /api/v1
 
 // Health Check
-app.listen('/', (req : any, res : any) => {
-  res.send('Server is up and running!');
+app.listen('/', () => {
+  console.log('Server is up and running!');
 });
 
 // Error Handling Middleware
-app.use(errorHandler);
+// app.use(errorHandler);
 
 export default app;
