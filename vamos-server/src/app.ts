@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import * as dotenv from 'dotenv';
 // import {errorHandler}  from './middlewares/errorHandler'; // Import custom error handler
 import routes from './routes/v1'; // Import all routes
+import envconfig from './config/env.config';
 
 // Load environment variables
 dotenv.config();
@@ -25,7 +26,7 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bo
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || 'secret-key',
+    secret: envconfig.jwt.secret || 'secret-key',
     resave: false,
     saveUninitialized: true,
   })
@@ -37,9 +38,9 @@ app.use(passport.session());
 app.use('/api/v1', routes); // Prefix API routes with /api/v1
 
 // Health Check
-app.listen('/', () => {
-  console.log('Server is up and running!');
-});
+// app.listen('/', () => {
+//   console.log('Server is up and running!');
+// });
 
 // Error Handling Middleware
 // app.use(errorHandler);

@@ -13,9 +13,10 @@ let server : Server
 
 connectDB()
   .then(async () => {
+    console.log("in then")
 
     server = app.listen(process.env.SERVER_PORT, () => {
-      // logger.info(`Listening to port ${config.port}`);
+      console.log(`Listening to port whatever`);
     });
 
     // WEB SOCKET CONNECTION
@@ -32,6 +33,7 @@ connectDB()
   })
   .catch((error: any) => {
     console.log('Error:', error);
+    process.exit(1); 
     // logger.error('Unable to connect to the database:', error);
   });
 
