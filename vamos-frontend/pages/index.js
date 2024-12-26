@@ -1,8 +1,18 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Button from '@mui/material/Button';
+import { useRouter } from 'next/router';
 
 export default function Home() {
+
+  
+
+  const router = useRouter();
+
+  const handleNavigateLogin = () => {
+    router.push('/signin');
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -18,7 +28,7 @@ export default function Home() {
             </a>
           </div>
           <div className={styles.loginButton}>
-            <Button variant="contained"  href="#outlined-buttons">
+            <Button variant="contained"  onClick={handleNavigateLogin}>
               Login
             </Button>
           </div>

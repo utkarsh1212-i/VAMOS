@@ -1,11 +1,10 @@
 import React from 'react';
-import Chat from '../components/Chat';
+// import 
 
 const ChatPage = () => {
   return (
     <div>
-      <h1>Real-Time Chat</h1>
-      <Chat />
+      <h1>Welcome to Vamos</h1>
     </div>
   );
 };
