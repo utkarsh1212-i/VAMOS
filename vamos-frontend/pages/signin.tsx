@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { signIn, useSession } from "next-auth/react";
@@ -9,17 +9,69 @@ import {
   Box,
   Divider,
   Link,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
-// import { getIdentityLoginUrl } from "../url-facades/auth-url";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import axios from "axios";
+import Cookies from 'js-cookie';
+import {apiUrls} from '../utils/apiUrls'
 
 export default function SignIn() {
   const { data: session } = useSession();
   const router = useRouter();
 
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
+  const [loading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); 
+
+
   if (session) {
-    router.push("/dashboard"); // Redirect to home page if already logged in
+    router.push("/dashboard");
     return null;
   }
+
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handlePasswordToggle = () => {
+    setShowPassword((prev) => !prev);
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      setError("");
+      setIsLoading(true);
+      console.log(formData, "formData")
+
+      // Call the login API
+      const response = await axios.post(apiUrls.LOGIN, formData);
+
+        if (response.status == 200) {
+            const { tokens } = await response.data.json();
+
+
+            Cookies.set('authToken', tokens, {
+                expires: 1,
+                secure: process.env.NODE_ENV === 'production', // Only use secure cookies in production
+                sameSite: 'strict', // Prevent CSRF attacks
+            });
+             //   await getUserProfile()
+          router.push("/dashboard");
+        }
+        setIsLoading(false);
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message || "Failed to login. Please try again."
+      );
+    }
+  };
 
   const handleSignUpNavigation = () => {
     router.push("/signup");
@@ -59,21 +111,45 @@ export default function SignIn() {
           >
             Welcome To The Arena
           </Typography>
-
-          <TextField
+          <form onSubmit={handleSubmit}>
+            <TextField
             fullWidth
             label="Email"
             type="email"
+            name="email"
             variant="outlined"
             sx={{ marginBottom: "16px" }}
-          />
+            value={formData.email}
+            onChange={handleChange}
+            />
           <TextField
             fullWidth
             label="Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
+            name="password"
             variant="outlined"
             sx={{ marginBottom: "16px" }}
-          />
+            value={formData.password}
+            onChange={handleChange}
+            InputProps={{
+                endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={handlePasswordToggle} edge="end">
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+            }}
+            />
+           {error && (
+              <Typography
+                variant="body2"
+                color="error"
+                sx={{ marginBottom: "16px" }}
+              >
+                {error}
+              </Typography>
+            )}
           <Typography
             variant="body2"
             align="right"
@@ -85,6 +161,7 @@ export default function SignIn() {
           <Button
             fullWidth
             variant="contained"
+            type="submit"
             sx={{
               backgroundColor: "#4CAF50",
               color: "white",
@@ -94,6 +171,7 @@ export default function SignIn() {
           >
             Login
           </Button>
+          </form>
 
           <Divider sx={{ marginY: "16px" }}>or</Divider>
 

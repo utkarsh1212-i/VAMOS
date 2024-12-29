@@ -21,7 +21,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "utils/apiUrls.js"  ],
   "exclude": [
     "node_modules"
   ]

@@ -98,6 +98,13 @@ const login = async (req: any, res: any) => {
       const { password: _, ...userWithoutPassword } = user.dataValues; // Exclude password property
       const tokens = await tokenService.generateAuthTokens(user.dataValues);
       // await setLocalStore(email);
+      res.cookie('authToken', tokens, {
+        httpOnly: true,
+        // secure: process.env.NODE_ENV === 'production',
+        secure: true,
+        sameSite: 'strict',
+        maxAge: 3600000, // 1 hour
+      });
       res.status(200).json({ success: true, message: 'Sign-in successful', tokens });
     } catch (error: any) {
       console.error(error); // Log the error
