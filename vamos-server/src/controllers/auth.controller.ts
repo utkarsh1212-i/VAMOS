@@ -100,10 +100,17 @@ const login = async (req: any, res: any) => {
       const { password: _, ...userWithoutPassword } = user.dataValues; // Exclude password property
       const tokens = await tokenService.generateAuthTokens(user.dataValues);
       // await setLocalStore(email);
-      res.cookie('authToken', tokens, {
-        httpOnly: true,
-        // secure: process.env.NODE_ENV === 'production',
-        secure: true,
+      res.cookie('authToken', tokens?.access?.token, {
+        // httpOnly: true, // for production only 
+        secure: process.env.NODE_ENV === 'production',
+        // secure: true,
+        sameSite: 'strict',
+        maxAge: 3600000, // 1 hour
+      });
+      res.cookie('refreshToken', tokens?.access?.refresh, {
+        // httpOnly: true, // for production only 
+        secure: process.env.NODE_ENV === 'production',
+        // secure: true,
         sameSite: 'strict',
         maxAge: 3600000, // 1 hour
       });

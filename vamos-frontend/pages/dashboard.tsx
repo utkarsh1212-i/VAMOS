@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import apiClient from "../utils/apiManager";
 import { apiUrls } from "../utils/apiUrls";
-import { setCookieSession } from "../utils/cookiesManager";
+import { getSession, setCookieSession } from "../utils/cookiesManager";
 
 const DashBoard = () => {
   const { data: session } = useSession();
@@ -13,12 +13,14 @@ const DashBoard = () => {
 
   useEffect(() => {
     if (!session) {
-      router.push("/signin");
+      const isSession = getSession()
+      console.log(isSession, "isSession")
+      if(!isSession){
+        console.log(session ,"SESSION", isSession)
+        router.push("/signin");
+      }
     }
   }, [session]);
-  if (!session) {
-    return null;
-  }
 
   // Function to refresh access token every 1 minute
   const refreshAccessToken = async () => {
@@ -72,7 +74,7 @@ const DashBoard = () => {
     <div>
       <h1>Welcome to VAMOS DASHABORAD</h1>
 
-      <Logout />
+      {/* <Logout /> */}
     </div>
   );
 };
