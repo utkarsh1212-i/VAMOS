@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 
 // Create an axios instance
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3000/', // Replace with your API base URL
+  baseURL: `http://localhost:${process.env.SERVER_PORT}/`, // Replace with your API base URL
   headers: {
     'Content-Type': 'application/json',
   },

@@ -1,5 +1,5 @@
 import express, { Application } from 'express';
-// import cors from 'cors';
+import cors from 'cors';
 // import morgan from 'morgan';
 import passport from 'passport';
 import session from 'express-session';
@@ -15,8 +15,14 @@ dotenv.config();
 // Create Express app
 const app: Application = express();
 
+const corsOptions = {
+  origin: 'http://localhost:3000', // Allow requests from this origin
+  methods: 'GET,POST,PUT,DELETE,OPTIONS', // Allowed HTTP methods
+  credentials: true, // Enable cookies if needed
+};
+
 // Middleware
-// app.use(cors()); // Enable CORS
+app.use(cors(corsOptions)); // Enable CORS
 // app.use(morgan('dev')); // Logger middleware
 app.use(helmet()); // Add basic security headers
 app.use(express.json()); // Parse JSON request bodies
@@ -46,3 +52,4 @@ app.use('/api/v1', routes); // Prefix API routes with /api/v1
 // app.use(errorHandler);
 
 export default app;
+

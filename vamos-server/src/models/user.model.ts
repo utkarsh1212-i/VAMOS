@@ -2,7 +2,7 @@ import { DataTypes, Model, Sequelize } from "sequelize";
 import envconfig from "../config/env.config";
 
 interface UserAttributes {
-  userId: number;
+  userId?: number;
   username: string;
   email: string;
   password: string;

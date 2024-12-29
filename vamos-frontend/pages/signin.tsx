@@ -16,6 +16,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
 import Cookies from 'js-cookie';
 import {apiUrls} from '../utils/apiUrls'
+import apiClient from "../utils/apiManager";
 
 export default function SignIn() {
   const { data: session } = useSession();
@@ -51,10 +52,12 @@ export default function SignIn() {
       console.log(formData, "formData")
 
       // Call the login API
-      const response = await axios.post(apiUrls.LOGIN, formData);
+      // const response = await apiClient.post(`${apiUrls.LOGIN}`, { formData})
+      const response = await axios.post('http://localhost:8085/api/v1/auth/signin', formData, {  withCredentials: true });
+      console.log(response, "LOGIN RESPONSE")
 
         if (response.status == 200) {
-            const { tokens } = await response.data.json();
+            const { tokens } = await response.data;
 
 
             Cookies.set('authToken', tokens, {
@@ -62,8 +65,8 @@ export default function SignIn() {
                 secure: process.env.NODE_ENV === 'production', // Only use secure cookies in production
                 sameSite: 'strict', // Prevent CSRF attacks
             });
-             //   await getUserProfile()
-          router.push("/dashboard");
+            //   await getUserProfile()
+            router.push("/dashboard");
         }
         setIsLoading(false);
     } catch (err: any) {

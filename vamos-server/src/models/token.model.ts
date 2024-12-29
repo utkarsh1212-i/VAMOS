@@ -3,7 +3,7 @@ import { User } from "./user.model";
 import envconfig from "../config/env.config";
 
 interface TokenAttributes{
-    tokenId : number;
+    tokenId? : number;
     userId: number;
     tokenType: string;
     tokenValue: string;
@@ -27,16 +27,16 @@ Token.init(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-      field: 'ahf_token_id',
+      field: 'token_id',
     },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: User,
-        key: 'ahf_user_id',
+        key: 'user_id',
       },
-      field: 'ahf_user_id',
+      field: 'user_id',
     },
     tokenType: {
       type: DataTypes.STRING(100),
@@ -64,7 +64,7 @@ Token.init(
   },
   {
     sequelize,
-    tableName: 'ahf_token',
+    tableName: 'token',
     timestamps: false,
   },
 );

@@ -2,11 +2,10 @@ import jwt from 'jsonwebtoken';
 import moment from 'moment';
 import { Token } from '../models/token.model';
 import { Request, Response, NextFunction } from 'express';
+import envconfig from '../config/env.config';
 
-const SECRET_KEY = process.env.JWT_SECRET || 'somesecret'  
 
-
-const generateToken = (userId: string, expires: moment.Moment, type: string, secret = SECRET_KEY): string => {
+const generateToken = (userId: string, expires: moment.Moment, type: string, secret = envconfig.jwt.secret ): string => {
     const payload = {
       sub: userId,
       iat: moment().unix(),
@@ -24,7 +23,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
   }
 
   try {
-    const decoded = jwt.verify(token, SECRET_KEY);
+    const decoded = jwt.verify(token, envconfig.jwt.secret);
     req.user = decoded; // Attach the payload to the request object
     next();
   } catch (error) {
@@ -40,10 +39,9 @@ const saveToken = async (token: string, userId: string, expires: moment.Moment, 
   
     const tokenDoc = await Token.create({
       tokenValue: token,
-      userId: 34,
+      userId: userIdNumber,
       expiresIn: expires.toDate() ,
       tokenType: type,
-      tokenId: 0,
       createdAt: new Date()
     });
     return tokenDoc;
@@ -52,12 +50,12 @@ const saveToken = async (token: string, userId: string, expires: moment.Moment, 
 
 
 const generateAuthTokens = async (user: any): Promise<any> => {
-    const accessTokenExpires = moment().add(process.env.ACCESSEXPIRATIONTIME, 'minutes');
+    const accessTokenExpires = moment().add(envconfig.jwt.accessExpirationMinutes, 'minutes');
     const accessToken = generateToken(user.userId, accessTokenExpires,'ACCESS');
   
-    const refreshTokenExpires = moment().add(process.env.REFRESHEXPIRATIONDAY, 'days');
-    const refreshToken = generateToken(user.ahfUserId, refreshTokenExpires, 'REFRESH');
-    await saveToken(refreshToken, user.ahfUserId, refreshTokenExpires, 'REFRESH');
+    const refreshTokenExpires = moment().add(envconfig.jwt.refreshExpirationDays, 'days');
+    const refreshToken = generateToken(user.userId, refreshTokenExpires, 'REFRESH');
+    await saveToken(refreshToken, user.userId, refreshTokenExpires, 'REFRESH');
   
     return {
       access: {
