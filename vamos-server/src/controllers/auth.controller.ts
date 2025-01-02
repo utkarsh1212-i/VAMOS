@@ -83,60 +83,76 @@ const signUp = async (req: any, res: any) => {
 const login = async (req: any, res: any) => {
     const { email, password } = req.body;
     try {
-      if (!email || !password) {
-        return res.status(httpStatus.BAD_REQUEST).json({
-          success: false,
-          message: 'Email or Password is incorrect',
+        if (!email || !password) {
+            return res.status(httpStatus.BAD_REQUEST).json({
+                success: false,
+                message: 'Email or Password is incorrect',
+            });
+        }
+        // check if user exists or not 
+        const user = await userService.getUserByEmail(email);
+        if (user == null) {
+            return res.status(httpStatus.BAD_REQUEST).json({
+                success: false,
+                message: 'Account does not exist',
+            });
+        }
+        const { password: _, ...userWithoutPassword } = user.dataValues; // Exclude password property
+        const tokens = await tokenService.generateAuthTokens(user.dataValues);
+        // await setLocalStore(email);
+        res.cookie('authToken', tokens?.access?.token, {
+            httpOnly: true, // for production only 
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 3600000, // 1 hour
         });
-      }
-      // check if user exists or not 
-      const user = await userService.getUserByEmail(email);
-      if (user == null) {
-        return res.status(httpStatus.BAD_REQUEST).json({
-          success: false,
-          message: 'Account does not exist',
+        res.cookie('refreshToken', tokens?.refresh?.token, {
+            httpOnly: true, // for production only 
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 86400000, // 1 day
         });
-      }
-      const { password: _, ...userWithoutPassword } = user.dataValues; // Exclude password property
-      const tokens = await tokenService.generateAuthTokens(user.dataValues);
-      // await setLocalStore(email);
-      res.cookie('authToken', tokens?.access?.token, {
-        // httpOnly: true, // for production only 
-        secure: process.env.NODE_ENV === 'production',
-        // secure: true,
-        sameSite: 'strict',
-        maxAge: 3600000, // 1 hour
-      });
-      res.cookie('refreshToken', tokens?.access?.refresh, {
-        // httpOnly: true, // for production only 
-        secure: process.env.NODE_ENV === 'production',
-        // secure: true,
-        sameSite: 'strict',
-        maxAge: 3600000, // 1 hour
-      });
-      res.status(200).json({ success: true, message: 'Sign-in successful', tokens });
-    } catch (error: any) {
-      console.error(error); // Log the error
-    //    
+        return res.status(httpStatus.OK).json({
+            success: true,
+            message: 'Login successful',
+            user: userWithoutPassword,
+            tokens,
+        });
+    } catch (error) {
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: 'Internal server error',
+        });
     }
 };
 
 
-
 // ********** Log Out  ************* 
 
-// const logout = async (req: Request, res: Response) => {
-//   const result = await authService.logout(req.body.refreshToken);
-//   if (result === "successful") {
-//     res.cookie("connect.sid", "", { expires: new Date(0) });
-//     res
-//       .status(httpStatus.OK)
-//       .json({ success: true, message: "Logout Successfully" });
-//   } else {
-//     res
-//       .status(httpStatus.NOT_FOUND)
-//       .json({ success: false, message: "Refresh Token not found" });
-//   }
-// };
+//********* LOGOUT ***************** */
+// Standard Sign Out
+const logout = async (req: any, res: any) => {
+    try {
+        res.clearCookie('authToken', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+        });
+        res.clearCookie('refreshToken', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+        });
+        return res.status(httpStatus.OK).json({
+            success: true,
+            message: 'Logout successful',
+        });
+    } catch (error) {
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: 'Internal server error',
+        });
+    }
+};
 
 export { login , signUp}
