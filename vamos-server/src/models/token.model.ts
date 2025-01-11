@@ -17,7 +17,7 @@ class Token extends Model<TokenAttributes> implements TokenAttributes {
     public tokenType!: string;
     public tokenValue!: string;
     public createdAt!: Date;
-    public expiresIn!: Date | null;
+    public expiresIn!: Date;
 }
 const sequelize = new Sequelize(envconfig.postgres.url, { logging: false });
 

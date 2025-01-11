@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import apiClient from "../utils/apiManager";
 import { apiUrls } from "../utils/apiUrls";
 import { getSession, setCookieSession } from "../utils/cookiesManager";
+import axios from "axios";
 
 const DashBoard = () => {
   const { data: session } = useSession();
@@ -24,41 +25,51 @@ const DashBoard = () => {
 
   // Function to refresh access token every 1 minute
   const refreshAccessToken = async () => {
-    const tokenDetails = JSON.parse(Cookies.get('authToken') || '{}');
-    const refreshToken = tokenDetails?.refreshToken;
-    const refreshExpires = tokenDetails?.refreshExpires;
-    if (refreshToken && refreshExpires) {
-      try {
-        // Check if refresh token is expired
-        const currentTimestamp = new Date().getTime();
-        const expiresTimestamp = new Date(refreshExpires).getTime();
-        if (currentTimestamp < expiresTimestamp) {
-          const response = await apiClient.post(`${apiUrls.GET_ACCESS_TOKEN}`, {
-            refreshToken,
-          });
-          if (response.status === 200) {
-             const accessToken = response.data.access.token;
-          const newRefreshToken = response.data.refresh.token; // Update if backend sends a new refresh token
-          const newRefreshExpires = response.data.refresh.expires;
-            setCookieSession(accessToken, refreshToken, refreshExpires);  // to be used as a function to set new tokens in Cookies
-          }
-        } else {
-          Cookies.remove('authToken');
-          sessionStorage.clear();
-          router.push('/signin')
-        }
-      } catch (error) {
-        console.error("Error refreshing access token:", error);
+    try {
+      const tokenDetails = getSession();
+      if (!tokenDetails) {
+        console.log("tokenDetailsinDashboard", tokenDetails)
+        router.push('/signin');
+        return;
       }
-    } else {
-      console.error(
-        "Refresh token or expiration time not found in localStorage"
-      );
+      
+      console.log("tokenDetailsinDashboard", tokenDetails)
+      const currentTimestamp = new Date().getTime();
+      const expiresTimestamp = new Date(tokenDetails?.expires).getTime();
+
+      if (currentTimestamp < expiresTimestamp) {
+        const refreshToken = Cookies.get('refreshToken')
+        // api call to get access token using refresh token
+        const response = await apiClient.post(apiUrls.GET_ACCESS_TOKEN, {
+          refreshToken,
+        });
+
+        if (response.status === 200) {
+          const { access, refresh } = response.data;
+          setCookieSession(
+            access.token,
+            refresh.token,
+            refresh.expires
+          );
+        }
+      } else {
+        // Token is expired
+        Cookies.remove('authToken');
+        console.log("inside else")
+        sessionStorage.clear();
+        router.push('/signin');
+      }
+    } catch (error) {
+      console.error("Error refreshing access token:", error);
+      // On error, clear cookies and redirect to login
+      Cookies.remove('authToken');
+      sessionStorage.clear();
+      router.push('/signin');
     }
   };
 
   useEffect(() => {
-    refreshAccessToken();
+    // refreshAccessToken();
     const intervalId = setInterval(() => {
       refreshAccessToken();
     }, 30 * 60 * 1000);   // 30 minutes
@@ -67,14 +78,14 @@ const DashBoard = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, []);
+  }, [session]);
 
 
   return (
     <div>
       <h1>Welcome to VAMOS DASHABORAD</h1>
 
-      {/* <Logout /> */}
+      <Logout />
     </div>
   );
 };

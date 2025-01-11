@@ -5,6 +5,11 @@ const getUserByEmail = async (email: string): Promise<any> => {
 console.log('user data: ', user)
   return user;
 };
+const getUserById = async (userId: number): Promise<any> => {
+  const user = await User.findOne({ where: { userId } });
+console.log('user data: ', user)
+  return user;
+};
 
 
-export {getUserByEmail}
+export {getUserByEmail, getUserById}

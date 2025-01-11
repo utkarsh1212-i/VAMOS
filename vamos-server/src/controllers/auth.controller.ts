@@ -3,6 +3,7 @@ import * as userService from '../services/user.service';
 import httpStatus from 'http-status'
 import ApiError from '../utils/ApiError';
 import { User } from '../models/user.model';
+import { Request, Response } from 'express';
 
 // const signUp = async(req : any, res : any) => {
 //   res.status(200).json({ message : "Running"})
@@ -99,15 +100,16 @@ const login = async (req: any, res: any) => {
         }
         const { password: _, ...userWithoutPassword } = user.dataValues; // Exclude password property
         const tokens = await tokenService.generateAuthTokens(user.dataValues);
+        console.log(tokens, "tokens")
         // await setLocalStore(email);
-        res.cookie('authToken', tokens?.access?.token, {
-            httpOnly: true, // for production only 
+        res.cookie('authToken', JSON.stringify(tokens?.access), {
+            // httpOnly: true, // for production only 
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
             maxAge: 3600000, // 1 hour
         });
-        res.cookie('refreshToken', tokens?.refresh?.token, {
-            httpOnly: true, // for production only 
+        res.cookie('refreshToken', JSON.stringify(tokens?.refresh), {
+            // httpOnly: true, // for production only 
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
             maxAge: 86400000, // 1 day
@@ -133,26 +135,55 @@ const login = async (req: any, res: any) => {
 // Standard Sign Out
 const logout = async (req: any, res: any) => {
     try {
+        // Get the refresh token from cookies
+        const refreshToken = req.cookies.refreshToken;
+        
+        if (refreshToken) {
+            try {
+                // Parse the refresh token if it's stringified
+                const tokenData = typeof refreshToken === 'string' 
+                    ? JSON.parse(refreshToken.startsWith('j:') ? refreshToken.slice(2) : refreshToken) 
+                    : refreshToken;
+
+                // Invalidate the refresh token in the database if you're storing it
+                // await tokenService.removeToken(tokenData.token);
+            } catch (e) {
+                console.error('Error parsing refresh token during logout:', e);
+            }
+        }
+
+        // Clear cookies with the same settings used when setting them
         res.clearCookie('authToken', {
-            httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
         });
+        
         res.clearCookie('refreshToken', {
-            httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
         });
+
         return res.status(httpStatus.OK).json({
             success: true,
-            message: 'Logout successful',
+            message: 'Logged out successfully',
         });
-    } catch (error) {
+    } catch (error: any) {
+        console.error('Logout error:', error);
         return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
             success: false,
-            message: 'Internal server error',
+            message: 'Error during logout process',
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
         });
     }
 };
 
-export { login , signUp}
+const refreshTokens = async (req: any, res: any) => {
+  try {
+    const tokens = await tokenService.refreshAuth(req.body?.refreshToken);
+    return res.status(200).json({ ...tokens });
+  } catch (error) {
+    return res.status(401).json({ message: 'Please authenticate' });
+  }
+};
+
+export { login, signUp, refreshTokens }

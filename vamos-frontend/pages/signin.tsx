@@ -11,6 +11,7 @@ import {
   Link,
   IconButton,
   InputAdornment,
+  CircularProgress,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
@@ -58,13 +59,6 @@ export default function SignIn() {
 
         if (response.status == 200) {
             const { tokens } = await response.data;
-
-
-            Cookies.set('authToken', tokens, {
-                expires: 1,
-                secure: process.env.NODE_ENV === 'production', // Only use secure cookies in production
-                sameSite: 'strict', // Prevent CSRF attacks
-            });
             //   await getUserProfile()
             router.push("/dashboard");
         }
@@ -73,6 +67,7 @@ export default function SignIn() {
       setError(
         err.response?.data?.message || "Failed to login. Please try again."
       );
+      setIsLoading(false);
     }
   };
 
@@ -165,6 +160,7 @@ export default function SignIn() {
             fullWidth
             variant="contained"
             type="submit"
+            disabled={loading}
             sx={{
               backgroundColor: "#4CAF50",
               color: "white",
@@ -172,7 +168,11 @@ export default function SignIn() {
               "&:hover": { backgroundColor: "#45A049" },
             }}
           >
-            Login
+            {loading ? (
+              <CircularProgress size={24} sx={{ color: "white" }} />
+            ) : (
+              "Login"
+            )}
           </Button>
           </form>
 

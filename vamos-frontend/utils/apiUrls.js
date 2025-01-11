@@ -5,6 +5,7 @@ const apiUrls = {
     "SIGNUP": "/api/auth/signup",
     "RESET_PASSWORD": "/api/auth/reset-password",
     "FORGOT_PASSWORD": "/api/auth/forgot-password",
+    "GET_ACCESS_TOKEN": "/api/auth/refresh-tokens",
     
     // Auth URLs
     "GET_USER_PROFILE": "/api/v1/users/profile/",

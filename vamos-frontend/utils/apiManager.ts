@@ -14,6 +14,7 @@ apiClient.interceptors.request.use(
   (config) => {
     // Extract token from cookies
     const token = Cookies.get('authToken');
+    console.log("tokenin interceptor", token)
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

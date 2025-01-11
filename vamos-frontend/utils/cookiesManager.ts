@@ -1,40 +1,25 @@
 import Cookies from "js-cookie";
 
-const setCookieSession = (accessToken: string, refreshToken: string, refreshExpires: string) => {
-    // Combine tokens into a single object for storage
-    const tokenDetails = JSON.stringify({
-      accessToken,
-      refreshToken,
-      refreshExpires,
-    });
-  
-    // Set token details in a cookie
-    Cookies.set('authToken', tokenDetails, {
-      expires: 1,
-      secure: true,
-      sameSite: 'strict', // Prevents the cookie from being sent with cross-site requests
-    });
-  };
+export const setCookieSession = (accessToken: any, refreshToken: any, refreshExpires: any) => {
+  Cookies.set('authToken', JSON.stringify({
+    token: accessToken,
+    expires: refreshExpires
+  }));
+};
 
-const getSession = () => {
-    const access = Cookies.get('authToken'); // Retrieve the 'authToken' cookie
-    const refresh = Cookies.get('refreshToken'); // Retrieve the 'authToken' cookie
-  
-    if (!access) {
-      console.log('No session found');
-      return null;
-    }
-  
-    try {
-      // Decode and parse the cookie value (URL-safe Base64 encoded string)
-      // const parsedTokenDetai
-      // ls = JSON.parse(decodeURIComponent(tokenDetails));   for secure
-  
-      return access;
-    } catch (error) {
-      console.error('Error parsing token details:', error);
-      return null;
-    }
-  };
-  export { getSession , setCookieSession}
-  
+export const getSession = () => {
+  const authTokenStr = Cookies.get('authToken');
+  if (!authTokenStr) return null;
+  console.log(authTokenStr, "authTokenStr")
+  try {
+    // Remove 'j:' prefix if it exists and parse the JSON
+    const cleanToken = authTokenStr.startsWith('j:') 
+      ? authTokenStr.slice(2) 
+      : authTokenStr;
+    
+    return JSON.parse(cleanToken);
+  } catch (error) {
+    console.error('Error parsing auth token:', error);
+    return null;
+  }
+};

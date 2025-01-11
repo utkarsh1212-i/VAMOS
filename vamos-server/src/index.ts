@@ -13,7 +13,6 @@ let server : Server
 
 connectDB()
   .then(async () => {
-    console.log("in then")
 
     server = app.listen(process.env.SERVER_PORT, () => {
       console.log(`Listening to port ${process.env.SERVER_PORT}`);
