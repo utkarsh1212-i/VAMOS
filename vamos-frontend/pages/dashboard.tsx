@@ -164,7 +164,8 @@ const DashBoard = () => {
     // refreshAccessToken();
     const intervalId = setInterval(() => {
       refreshAccessToken();
-    }, 30 * 60 * 1000);   // 30 minutes
+      console.log("hitting refresh access token")
+    }, 15 * 60 * 1000);   // 15 minutes
 
     // Cleanup the previous interval when the component unmounts or when the effect is re-executed
     return () => {
@@ -172,41 +173,78 @@ const DashBoard = () => {
     };
   }, [session]);
 
-  const contentItems = [
+  const sportItems = [
     {
       id: 1,
       title: "Cricket",
+      slug: "cricket",
       description: "A thrilling story of racing and redemption",
       image: "/cricket.jpg"
     },
     {
       id: 2,
       title: "Football",
+      slug: "football",
       description: "Holiday adventure with action and comedy",
       image: "/football.webp"
     },
     {
       id: 3,
       title: "Basketball",
+      slug: "basketball",
       description: "Holiday adventure with action and comedy",
       image: "/basketball.jpg"
     },
     {
       id: 4,
       title: "Rugby",
+      slug: "rugby",
       description: "Holiday adventure with action and comedy",
       image: "/rugby.jpg"
     },
     {
       id: 5,
       title: "Triathlon",
+      slug: "triathlon",
       description: "Holiday adventure with action and comedy",
       image: "/ironman.jpg"
     },
     // Add more items as needed
   ];
+  const teamItems = [
+    {
+      id: 1,
+      title: "Manchester United",
+      slug: "manchester-united",
+      description: "A thrilling story of racing and redemption",
+      image: "/unitedteam.jpg"
+    },
+    {
+      id: 2,
+      title: "Real Madrid",
+      slug: "real-madrid",
+      description: "Holiday adventure with action and comedy",
+      image: "/realmadrid.jpeg"
+    },
+    {
+      id: 3,
+      title: "Kerala Blasters",
+      slug: "kerala-blasters",
+      description: "Holiday adventure with action and comedy",
+      image: "/keralablasters2.webp"
+    },
+    {
+      id: 5,
+      title: "Mumbai Indians",
+      slug: "mumbai-indians",
+      description: "Holiday adventure with action and comedy",
+      image: "/mumbaiindians.jpg"
+    },
+    // Add more items as needed
+  ];
 
   return (
+    // <div style={{background:'linear-gradient(to right, #000000, #434343)'}}>
     <div>
       <Navbar />
       {/* Container for the dashboard cards */}
@@ -251,7 +289,7 @@ const DashBoard = () => {
       <ContentSection>
         <Container maxWidth="xl">
           <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="h5" sx={{ 
+            <Typography variant="h5" sx={{
               fontWeight: 'bold',
               color: '#ffffff',
               fontSize: '2rem',
@@ -281,7 +319,7 @@ const DashBoard = () => {
             pb: 2,
             width: '100%'
           }}>
-            {/* {contentItems.map((item) => (
+            {/* {sportItems.map((item) => (
               <SportsCard key={item.id}>
                 <ContentImage src={item.image} alt={item.title} />
                 <ContentInfo>
@@ -294,8 +332,8 @@ const DashBoard = () => {
                 </ContentInfo>
               </SportsCard>
             ))} */}
-            {contentItems.map((item) => (
-              <SportsCard key={item.id}>
+            {sportItems.map((item) => (
+              <SportsCard key={item.id} onClick={() => router.push(`/sports/${item.slug}`)}>
                 <ContentImage
                   src={item.image}
                   alt={item.title}
@@ -307,9 +345,9 @@ const DashBoard = () => {
                   }}
                 />
                 <Box className="content-info">
-                  <Typography 
-                    variant="h6" 
-                    sx={{ 
+                  <Typography
+                    variant="h6"
+                    sx={{
                       mb: 1,
                       textAlign: 'center',
                       fontSize: '1.5rem',
@@ -332,8 +370,77 @@ const DashBoard = () => {
             ))}
 
           </Box>
+
         </Container>
       </ContentSection>
+
+
+      {/* New content section for TEAMS */}
+      <ContentSection>
+        <Typography variant="h5" sx={{
+          fontWeight: 'bold',
+          color: '#ffffff',
+          fontSize: '2rem',
+          fontFamily: '"Poppins", sans-serif',
+          textTransform: 'uppercase',
+          letterSpacing: '2px',
+          textAlign: 'center',
+          textShadow: '0 0 10px rgba(57,255,20,0.5)'
+        }}>
+          Featured Teams
+        </Typography>
+
+        <Container maxWidth="xl" sx={{ mt: 4 }}>
+          <Box sx={{
+            display: 'flex',
+            overflowX: 'auto',
+            '&::-webkit-scrollbar': { display: 'none' },
+            scrollbarWidth: 'none',
+            pb: 2,
+            width: '100%'
+          }}>
+            {teamItems.map((item) => (
+              <SportsCard key={item.id} onClick={() => router.push(`/teams/${item.slug}`)}>
+                <ContentImage
+                  src={item.image}
+                  alt={item.title}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    borderRadius: '8px',
+                  }}
+                />
+                <Box className="content-info">
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      mb: 1,
+                      textAlign: 'center',
+                      fontSize: '1.5rem',
+                      fontWeight: '600',
+                      color: '#39ff14',
+                      fontFamily: '"Poppins", sans-serif',
+                      textTransform: 'uppercase',
+                      letterSpacing: '1px',
+                      textShadow: '0 0 8px rgba(57,255,20,0.7)',
+                      padding: '0.5rem'
+                    }}
+                  >
+                    {item.title}
+                  </Typography>
+                  {/* <Typography variant="body2">
+                    {item.description}
+                  </Typography> */}
+                </Box>
+              </SportsCard>
+            ))}
+
+          </Box>
+
+        </Container>
+      </ContentSection>
+
     </div>
   );
 };

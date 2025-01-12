@@ -20,7 +20,8 @@ import Image from 'next/image';
 
 // Styled components
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  backgroundColor: 'rgba(33, 147, 176, 0.95)',
+  // backgroundColor: 'rgba(33, 147, 176, 0.95)',
+  backgroundColor: 'rgba(33, 147, 176, 0.8)',
   backdropFilter: 'blur(10px)',
   boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
 }));
@@ -73,13 +74,13 @@ const Navbar = () => {
         {/* Logo */}
         <LogoContainer onClick={() => router.push('/dashboard')}>
           <Image 
-            src="/vamos-high-resolution-logo.svg"
+            src="/vamos-high-resolution-logo-transparent.svg"
             alt="Vamos Logo" 
-            width={40}
+            width={100}
             height={40}
             style={{ marginRight: 8 }}
           />
-          <Typography
+          {/* <Typography
             variant="h6"
             component="div"
             sx={{ 
@@ -88,7 +89,7 @@ const Navbar = () => {
             }}
           >
             VAMOS
-          </Typography>
+          </Typography> */}
         </LogoContainer>
 
         {/* Navigation Links */}
@@ -97,7 +98,7 @@ const Navbar = () => {
             <StyledNavLink
               className={isActive('/team') ? 'active' : ''}
             >
-              My Team
+              My Team 
             </StyledNavLink>
           </Link>
           <Link href="/quizzes" passHref>
