@@ -91,10 +91,10 @@ Team.belongsTo(Sport, {
   as: 'sport'
 });
 
-Team.belongsTo(User, {
-  foreignKey: 'captainId',
-  as: 'captain'
-});
+// Team.belongsTo(User, {
+//   foreignKey: 'captainId',
+//   as: 'captain'
+// });
 
 
 export { Team };
