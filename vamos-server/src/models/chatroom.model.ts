@@ -13,6 +13,7 @@ interface ChatRoomAttributes {
   createdAt: Date;
   updatedAt: Date;
   maxParticipants?: number;
+  activeMembers?: number;
 }
 
 class ChatRoom extends Model<ChatRoomAttributes> implements ChatRoomAttributes {
@@ -26,6 +27,7 @@ class ChatRoom extends Model<ChatRoomAttributes> implements ChatRoomAttributes {
   public createdAt!: Date;
   public updatedAt!: Date;
   public maxParticipants!: number;
+  public activeMembers!: number;    
 }
 
 const sequelize = new Sequelize(envconfig.postgres.url, { logging: false });
@@ -98,6 +100,11 @@ ChatRoom.init(
       allowNull: true,
       defaultValue: 50,
       field: 'max_participants',
+    },
+    activeMembers: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      field: 'active_memnbers',
     },
   },
   {

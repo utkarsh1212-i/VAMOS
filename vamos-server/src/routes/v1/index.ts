@@ -1,6 +1,8 @@
 import express from 'express';
 import authRoute from './auth.route';
 import dashboardRoute from './dashboard.route';
+import chatRoomRoute from './chatroom.route';
+import userChatRoomRoute from './userChatRoom.route';
 
 const router = express.Router();
 
@@ -12,7 +14,15 @@ const defaultRoutes = [
   {
     path: '/dashboard',
     route: dashboardRoute,
-  }
+  },
+  {
+    path: '/rooms',
+    route: chatRoomRoute,
+  },
+  {
+    path: '/rooms-action',
+    route: userChatRoomRoute,
+  },
   // {
   //   path: '/teams',
   //   route: teamRoute,

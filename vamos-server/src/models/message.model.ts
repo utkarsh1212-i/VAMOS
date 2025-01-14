@@ -93,4 +93,4 @@ Message.belongsTo(ChatRoom, {
   as: 'chatRoom'
 });
 
-export { Message };
+export { Message, MessageAttributes };

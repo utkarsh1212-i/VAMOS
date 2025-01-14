@@ -1,5 +1,5 @@
-import express from 'express';
-// import passport from 'passport';
+import express from "express";
+import passport from "passport";
 // import validate from '../../middlewares/validate';
 // import * as authValidation from '../../validations/auth.validation';
 import * as authController from '../../controllers/auth.controller';
@@ -16,5 +16,25 @@ router.post('/refresh-tokens', authController.refreshTokens);
 // router.post('/forgot-password', validate(authValidation.forgotPassword), authController.forgotPassword);
 // router.post('/reset-password', validate(authValidation.resetPassword), authController.resetPassword);
 
+router.get(
+  "/signup/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+router.get(
+  "/login/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+router.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: "/signin",
+    successRedirect: "http://localhost:3000/#/sso-login",
+  }),
+  (req, res) => {
+    // Send token or redirect the user to the frontend
+    res.sendt("Successful Signed In"); // Or send a JWT to the client
+  }
+);
 
 export default router;
