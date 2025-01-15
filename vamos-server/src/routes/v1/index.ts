@@ -2,7 +2,7 @@ import express from 'express';
 import authRoute from './auth.route';
 import dashboardRoute from './dashboard.route';
 import chatRoomRoute from './chatroom.route';
-import userChatRoomRoute from './userChatRoom.route';
+import userChatRoomRoute from './userchatroom.route';
 
 const router = express.Router();
 

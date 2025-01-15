@@ -33,7 +33,7 @@ router.get(
   }),
   (req, res) => {
     // Send token or redirect the user to the frontend
-    res.sendt("Successful Signed In"); // Or send a JWT to the client
+    res.send("Successful Signed In"); // Or send a JWT to the client
   }
 );
 

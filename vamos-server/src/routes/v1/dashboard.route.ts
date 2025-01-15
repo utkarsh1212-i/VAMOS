@@ -8,13 +8,7 @@ import * as authController from '../../controllers/auth.controller';
 
 const router = express.Router();
 
-router.post('/signup', authController.signUp);
-router.post('/signin',  authController.login);
-// router.post('/guest/generate-id', validate(authValidation.guest), authController.guest);
-// router.post('/logout', validate(authValidation.logout), authController.logout);
-// router.post('/refresh-tokens', validate(authValidation.refreshTokens), authController.refreshTokens);
-// router.post('/forgot-password', validate(authValidation.forgotPassword), authController.forgotPassword);
-// router.post('/reset-password', validate(authValidation.resetPassword), authController.resetPassword);
+
 
 
 export default router;

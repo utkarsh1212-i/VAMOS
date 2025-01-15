@@ -1,5 +1,5 @@
 import express from "express";
-import { createRoomHandler, getAllChatRoomByTeamHandler, getMessagesHandler } from "../../controllers/chatroom.controller
+import { createRoomHandler, getAllChatRoomByTeamHandler, getMessagesHandler } from "../../controllers/chatroom.controller";
 
 const router = express.Router();
 
