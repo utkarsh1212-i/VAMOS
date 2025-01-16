@@ -173,3 +173,20 @@
     font-size: 0.875rem;
     opacity: 0.8;
 }
+
+
+.chatButton {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 20px 0;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  .chatButton:hover {
+    background-color: #0056b3;
+  } 

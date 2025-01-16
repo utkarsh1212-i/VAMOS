@@ -20,7 +20,7 @@ export const initializeSocket = (io: Server) => {
     // Send Message
     socket.on('send-message', async (messageData: any) => {
       const message = await sendMessage(messageData);
-      io.to(messageData.chatRoomId).emit('new-message', message);
+      io.to(messageData.chatRoomId.toString()).emit('new-message', message);
     });
 
     // Leave Room

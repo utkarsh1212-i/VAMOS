@@ -28,7 +28,7 @@ connectDB()
   
       // Pass the Socket.IO instance to the socket initialization functions
       initializeSocket(io);
-      initializeQuizSocket(io);
+      // initializeQuizSocket(io);
   })
   .catch((error: any) => {
     console.log('Error:', error);

@@ -1,6 +1,7 @@
-import { ChatRoom } from "../models/chatroom.model";
+import { ChatRoom, ChatRoomAttributes } from "../models/chatroom.model";
 
-const createChatRoom = async (data: Partial<ChatRoomAttributes>) => {
+// const createChatRoom = async (data: Partial<ChatRoomAttributes>) => {
+const createChatRoom = async (data: any) => {
   return await ChatRoom.create(data);
 };
 

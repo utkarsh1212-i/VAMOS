@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import socket from '../utils/socket';
+import { NextPage } from 'next';
 
-const Chat = () => {
+const Chat: NextPage  = () => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<string[]>([]);
   const [room, setRoom] = useState('general');
@@ -11,12 +12,12 @@ const Chat = () => {
     socket.emit('join-room', room);
 
     // Listen for incoming messages
-    socket.on('receive-message', ({ sender, message }) => {
+    socket.on('message', ({ sender, message }) => {
       setMessages((prev) => [...prev, `${sender}: ${message}`]);
     });
 
     return () => {
-      socket.off('receive-message');
+      socket.off('message');
     };
   }, [room]);
 

@@ -1,6 +1,7 @@
 import { Message, MessageAttributes } from "../models/message.model";
 
-const sendMessage = async (data: Partial<MessageAttributes>) => {
+// const sendMessage = async (data: Partial<MessageAttributes>) => {
+const sendMessage = async (data:any) => {
   return await Message.create(data);
 };
 const getMessagesForChatRoom = async (chatRoomId: number) => {

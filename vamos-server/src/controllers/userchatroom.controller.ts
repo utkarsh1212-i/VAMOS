@@ -10,7 +10,7 @@ const userChatRoomController = {
       res
         .status(200)
         .send({ message: `Users Rooms are`, data: roomData });
-    } catch (error) {
+    } catch (error:any) {
       res
         .status(500)
         .send({ message: `Error handling room: ${error.message}` });

@@ -2,6 +2,7 @@ import { NextPage } from 'next';
 import styles from '../../styles/sports.module.css';
 import Navbar from '../../components/Navbar';
 import Image from 'next/image';
+import router from 'next/router';
 
 const Football: NextPage = () => {
   const features = [
@@ -25,6 +26,13 @@ const Football: NextPage = () => {
       <Navbar />
       
       <h1 className={styles.header}>Football</h1>
+
+      <button 
+        className={styles.chatButton}
+        onClick={() => router.push('/rooms')}
+      >
+        Go to Chat
+      </button>
 
       <div className={styles.contentGrid}>
         {features.map((feature, index) => (

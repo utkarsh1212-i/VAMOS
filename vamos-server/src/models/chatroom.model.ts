@@ -120,4 +120,4 @@ ChatRoom.belongsTo(User, {
   as: 'creator'
 });
 
-export { ChatRoom };
+export { ChatRoom, ChatRoomAttributes };
