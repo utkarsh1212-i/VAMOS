@@ -18,9 +18,24 @@ export const initializeSocket = (io: Server) => {
     });
 
     // Send Message
-    socket.on('send-message', async (messageData: any) => {
+    socket.on('send-message', async ({ chatRoomId, content, userId }: any) => {
+      console.log('Received message at server:', { chatRoomId, content, userId });
+      const messageData = {
+        content,
+        userId,
+        chatRoomId,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isActive: true,
+      };
+
+      // Save the message to the database
       const message = await sendMessage(messageData);
-      io.to(messageData.chatRoomId.toString()).emit('new-message', message);
+      console.log(message, "message: ");
+      io.to(messageData.chatRoomId.toString()).emit('message', {
+        sender: message.userId,
+        message: message.content
+      });
     });
 
     // Leave Room

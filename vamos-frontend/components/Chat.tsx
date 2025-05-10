@@ -6,6 +6,7 @@ const Chat: NextPage  = () => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<string[]>([]);
   const [room, setRoom] = useState('general');
+  const [chatRoomId, setRoomId] = useState(1);
 
   useEffect(() => {
     // Join default room
@@ -22,7 +23,7 @@ const Chat: NextPage  = () => {
   }, [room]);
 
   const sendMessage = () => {
-    socket.emit('send-message', { room, message });
+    socket.emit('send-message', { chatRoomId, content: message, userId : 1  });
     setMessages((prev) => [...prev, `You: ${message}`]);
     setMessage('');
   };
