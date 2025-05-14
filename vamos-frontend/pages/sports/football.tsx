@@ -27,15 +27,14 @@ const Football: NextPage = () => {
   return (
     <div className={styles.sportsContainer}>
       <Navbar />
+      <button
+        className={styles.backButton}
+        onClick={() => window.history.back()}
+      >
+        Back
+      </button>
 
       <h1 className={styles.header}>Football</h1>
-
-      <button
-        className={styles.chatButton}
-        onClick={() => router.push('/rooms')}
-      >
-        Go to Chat
-      </button>
 
       <div className={styles.contentGrid}>
         {features.map((feature, index) => (

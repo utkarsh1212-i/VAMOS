@@ -1,12 +1,10 @@
 import React from 'react';
-import Chat from '../components/Chat';
+import Chat from '../../../components/Chat';
+import Navbar from '../../../components/Navbar';
 
 const RoomPage = () => {
   return (
-    <div>
-      <h1>Welcome to Vamos</h1>
       <Chat />
-    </div>
   );
 };
 

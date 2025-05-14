@@ -1,7 +1,8 @@
 import { join } from 'path';
 import styles from '../styles/ChatRoomList.module.css';
-import { getTeamById } from '../utils/teamsdata';
+import { getTeamById } from '../teamthemes/footballdata';
 import socket from '../utils/socket';
+import router from 'next/router';
 
 interface ChatRoomListProps {
     teamId: string; // Use team ID to fetch team-specific data
@@ -14,10 +15,11 @@ export default function ChatRoomList({ teamId }: ChatRoomListProps) {
         return <div className={styles.error}>Team not found!</div>;
     }
 
-    const joinRoomTrigger = (chatRoomId: number) => {
+    const joinRoomTrigger = (roomId: number) => {
         const userId = 1; // Replace with the actual user ID (e.g., from authentication)
-        socket.emit('join-room', { userId, chatRoomId });
-    };
+        socket.emit('join-room', { userId, roomId });
+        router.push(`/chat/${teamId}/${roomId}`)
+    }
 
     // Replace with real data
     const chatRooms = [
@@ -28,12 +30,6 @@ export default function ChatRoomList({ teamId }: ChatRoomListProps) {
 
     return (
         <>
-            <button
-                className={styles.backButton}
-                onClick={() => window.history.back()}
-            >
-                Back
-            </button>
             <div
                 className={styles.container}
                 style={{
@@ -41,9 +37,18 @@ export default function ChatRoomList({ teamId }: ChatRoomListProps) {
                     color: team.textColor,
                 }}
             >
+                <button
+                    className={styles.backButton}
+                    onClick={() => window.history.back()}
+                >
+                    Back
+                </button>
                 <div className={styles.header}>
-                    <img src={team.logo} width={50} height={50} alt={`${team.name} logo`} className={styles.teamLogo} />
-                    <h1 style={{ textAlign: 'center' }}>{team.name} Chat Rooms</h1>
+                    <img src={team.logo} height={80} width={80}  alt={`${team.name} logo`} className={styles.teamLogo} />
+                    <h1 style={{
+                        textAlign: 'center',
+                        fontFamily: `Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif`
+                    }}>{team.name}</h1>
                 </div>
                 <div className={styles.chatRoomList}>
                     {chatRooms.map((room, index) => (
@@ -65,7 +70,7 @@ export default function ChatRoomList({ teamId }: ChatRoomListProps) {
                                     <button
                                         className={styles.joinButton}
                                         onClick={() => joinRoomTrigger(index + 1)} // Assuming chatRoomId is index + 1
-                                        >
+                                    >
                                         Join Room
                                     </button>
                                 </div>
@@ -77,3 +82,6 @@ export default function ChatRoomList({ teamId }: ChatRoomListProps) {
         </>
     );
 }
+
+
+// TO MAP THE  CHATROOM ID FROM DB TO THE parameter of joinRoomTrigger function 

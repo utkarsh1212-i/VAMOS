@@ -1,6 +1,12 @@
 import { UserChatRoom } from "../models/userchatroom.model";
 
 const joinChatRoom = async (userId: number, chatRoomId: number) => {
+  const existingChatRoom = await UserChatRoom.findOne({
+    where: { userId, chatRoomId, isActive: true },
+  });
+  if (existingChatRoom) {
+    throw new Error("User is already part of this chat room.");
+  }
   return await UserChatRoom.create({
     userId,
     chatRoomId,

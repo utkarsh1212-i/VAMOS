@@ -190,3 +190,20 @@
   .chatButton:hover {
     background-color: #0056b3;
   } 
+
+  
+.backButton {
+  background-color: #5865f2;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-right: 10px;
+}
+
+.backButton:hover {
+  background-color: #4752c4;
+}

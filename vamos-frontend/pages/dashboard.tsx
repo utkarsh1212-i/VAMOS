@@ -19,6 +19,7 @@ const ContentSection = styled(Box)(({ theme }) => ({
   background: 'linear-gradient(to right, rgb(15, 12, 41), rgb(48, 43, 99), rgb(36, 36, 62))',
   marginTop: '4rem',
   boxShadow: 'inset 0 0 100px rgba(0,0,0,0.3)',
+  borderRadius: '2rem 2rem',
   position: 'relative',
   '&::before': {
     content: '""',

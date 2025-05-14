@@ -24,6 +24,7 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: 'rgba(33, 147, 176, 0.8)',
   backdropFilter: 'blur(10px)',
   boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+  borderRadius: '2rem 2rem',
 }));
 
 const LogoContainer = styled(Box)({
